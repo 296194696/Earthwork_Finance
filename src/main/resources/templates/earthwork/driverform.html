@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>司机单</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="layuiadmin/layui/css/layui.css" media="all">
+    <script src="my/js/jquery.min.js"></script>
+    <script th:src="@{my/js/jquery.min.js}"></script>
+</head>
+<body>
+
+<div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">车牌号</label>
+        <div class="layui-input-inline">
+            <input type="text" id="scard" name="scard" lay-verify="required|scradVaild" placeholder="车牌号" autocomplete="off" class="layui-input">
+        </div>
+        <!-- 对号 -->
+        <div class="layui-inline">
+            <i class="layui-icon" id="ri" style="color: green;font-weight: bolder;" hidden=""></i>
+        </div>
+        <!-- 错号 -->
+        <div class="layui-inline">
+            <i class="layui-icon" id="wr" style="color: red; font-weight: bolder;" hidden="">ဆ</i>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-inline">
+            <input type="text" id="sname" name="sname" lay-verify="required|snameVaild" placeholder="姓名" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">手机号</label>
+        <div class="layui-input-inline">
+            <input type="text" name="phone" lay-verify="required|phone"  placeholder="手机号" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="LAY-user-front-submit" id="LAY-user-front-submit" value="确认">
+    </div>
+</div>
+
+<script src="layuiadmin/layui/layui.js"></script>
+<script>
+    var check = "";//全局参数 用于提交表单时的校验
+    var checkname = "";
+    layui.config({
+        base: 'layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'element'], function(){
+        var $ = layui.$
+            ,form = layui.form
+            ,element  = layui.element  ;
+        var data=parent.blockdata;
+        if(null!=data&&undefined!=data){
+            form.val("layuiadmin-form-useradmin", {
+                "scard": data[0]["scard"],
+                "sname": data[0]["sname"],
+                "phone": data[0]["phone"],
+
+            });
+            $("#scard").attr("disabled",true);
+        };
+
+        form.verify({
+            scradVaild: function(value, item){ //value：表单的值、item：表单的DOM对象
+                if(check!=""){
+                    return  '车牌号应经存在,请勿重复添加！';
+                }
+                if (value.length != 7){
+                    return  '不是正确的车牌号！';
+                }
+                if(!new RegExp("^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$").test(value)){
+                    return '不是正确的车牌号！';
+                }
+                // if(/(^\_)|(\__)|(\_+$)/.test(value)){
+                //     return '用户名首尾不能出现下划线\'_\'';
+                // }
+                // if(/(^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$)/.test(value)){
+                //     return '车牌号不正确！';
+                // }
+            }
+            , snameVaild: function(value, item){ //value：表单的值、item：表单的DOM对象
+                if(checkname!=""){
+                    return  '姓名已经存在,请勿重复添加！';
+                }
+            }
+
+            //我们既支持上述函数式的方式，也支持下述数组的形式
+            //数组的两个值分别代表：[正则匹配、匹配不符时的提示文字]
+            ,pass: [/^[\S]{6,12}$/,'密码必须6到12位，且不能出现空格']
+
+        });
+
+    });
+
+    //添加表单失焦事件
+    //验证表单
+    $('#scard').blur(function() {
+        var name = $(this).val();
+
+        $.ajax({
+            url:'/driver/info/scard',//用户名框失去焦点是进行ajax请求 检验用户名是否重复了
+            type:'post',
+            dataType:'json',
+            data:{scard:name},
+            //验证用户名是否可用
+            success:function(data){
+                // console.log(data);
+                if (data.code == 1000) {
+                    $('#ri').removeAttr('hidden');
+                    $('#wr').attr('hidden','hidden');
+                    check="";
+
+                } else {
+                    check = "当前用户名已被占用";
+                    $('#wr').removeAttr('hidden');
+                    $('#ri').attr('hidden','hidden');
+                    layer.msg('车牌号已存在! ');
+                    check="OK";
+                }
+
+            }
+        })
+
+    });
+
+    $('#sname').blur(function() {
+        var name = $('#sname').val();
+
+        $.ajax({
+            url:'/driver/info/sname',//用户名框失去焦点是进行ajax请求 检验用户名是否重复了
+            type:'post',
+            dataType:'json',
+            data:{sname:name},
+            //验证用户名是否可用
+            success:function(data){
+                // console.log(data);
+                if (data.code == 1000) {
+                    // $('#ri').removeAttr('hidden');
+                    // $('#wr').attr('hidden','hidden');
+                    checkname="";
+
+                } else {
+                    checkname = "当前用户名已被占用";
+                    // $('#wr').removeAttr('hidden');
+                    // $('#ri').attr('hidden','hidden');
+                    layer.msg('姓名已存在，请勿重复添加! ');
+                    checkname="OK";
+                }
+
+            }
+        })
+
+    });
+</script>
+</body>
+</html>

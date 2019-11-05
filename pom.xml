@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.3.RELEASE</version>
+        <relativePath/> <!-- lookup paren from repository -->
+    </parent>
+    <groupId>com.example</groupId>
+    <artifactId>demo</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>WTAERINFO</name>
+    <description>Demo project for Spring Boot</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+       <!-- 添加servlet依赖，去掉内嵌Tomcat依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+<!--            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>-->
+        </dependency>
+<!--        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+            <scope>true</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.nekohtml</groupId>
+            <artifactId>nekohtml</artifactId>
+            <version>1.9.22</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.38</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.49</version>
+        </dependency>
+        <!-- guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>20.0</version>
+        </dependency>
+        <!--dozer start -->
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer</artifactId>
+            <version>5.5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer-spring</artifactId>
+            <version>5.5.1</version>
+        </dependency>
+        <!-- 解决传参时间类型 -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.9.4</version>
+        </dependency>
+
+        <!-- 公司基础库 -->
+
+        <!-- https://mvnrepository.com/artifact/com.esotericsoftware/reflectasm -->
+        <!-- 高性能反射辅助类库 -->
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>reflectasm</artifactId>
+            <version>1.11.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>reflectasm</artifactId>
+            <version>1.11.8</version>
+        </dependency>
+
+        <!-- ureport2 依赖 -->
+        <!-- https://mvnrepository.com/artifact/com.bstek.ureport/ureport2-console -->
+        <dependency>
+            <groupId>com.bstek.ureport</groupId>
+            <artifactId>ureport2-console</artifactId>
+            <version>2.2.9</version>
+        </dependency>
+
+
+
+        <!--  帆软表报 -->
+ <!--       <dependency>
+            <groupId>com.fine</groupId>
+            <artifactId>fine-core</artifactId>
+            <version>10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fine</groupId>
+            <artifactId>fine-activator</artifactId>
+            <version>10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fine</groupId>
+            <artifactId>fine-core</artifactId>
+            <version>10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fine</groupId>
+            <artifactId>fine-datasource</artifactId>
+            <version>10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fine</groupId>
+            <artifactId>fine-decision</artifactId>
+            <version>10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fine</groupId>
+            <artifactId>fine-decision-report</artifactId>
+            <version>10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fine</groupId>
+            <artifactId>fine-report-engine</artifactId>
+            <version>10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fine</groupId>
+            <artifactId>fine-schedule</artifactId>
+            <version>10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fine</groupId>
+            <artifactId>fine-schedule-report</artifactId>
+            <version>10.0</version>
+        </dependency>
+&lt;!&ndash;        <dependency>
+            <groupId>com.fine</groupId>
+            <artifactId>fine-swift-log-adaptor</artifactId>
+            <version>10.0</version>
+        </dependency>&ndash;&gt;
+        <dependency>
+            <groupId>com.fine</groupId>
+            <artifactId>fine-third</artifactId>
+            <version>10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fine</groupId>
+            <artifactId>fine-webui</artifactId>
+            <version>10.0</version>
+        </dependency>
+-->
+        <!-- end -->
+    </dependencies>
+
+    <build>
+
+        <!--finalName指定最终生成Jar包的名称，如果不指定，则为前面配置
+         artifactId+version（energy.0.0.1-SNAPSHOT.jar）作为jar包的名称-->
+        <finalName>finance</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- 没有该配置，devtools 不生效 -->
+                    <fork>true</fork>
+                    <addResources>true</addResources>
+                    <mainClass>com.water.irrigation.EarthworkFinanceApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

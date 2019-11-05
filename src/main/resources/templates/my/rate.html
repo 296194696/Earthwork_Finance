@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>表单组合</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="layuiadmin/style/admin.css" media="all">
+    <script type="text/javascript" src="/my/js/jquery-3.3.1.js"></script>
+    <style>
+        .layui-form-label{
+                     width : 200px
+                 }
+        .layui-input{
+            width : 900px
+        }
+        .layui-textarea{
+            width : 900px
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-header">水费水率设置</div>
+        <div class="layui-card-body" style="padding: 15px;">
+            <form class="layui-form" action="" lay-filter="component-form-group">
+                <div class="layui-form-item">
+                    <label class="layui-form-label" >用户每立方米水费：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="suserrate" lay-verify="number" autocomplete="off" placeholder="请输用户每立方米水费" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">单位每立方米水费：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="sdeptrate" lay-verify="number" placeholder="请输入单位每立方米水费" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">备注：</label>
+                    <div class="layui-input-block">
+                        <textarea name="snote" placeholder="请输入内容" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-layout-admin">
+                    <div class="layui-input-block">
+                        <div class="layui-footer" style="left: 0;">
+                            <button class="layui-btn" lay-submit="" lay-filter="component-form-demo1">立即提交</button>
+                            <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="layuiadmin/layui/layui.js" charset="utf-8"></script>
+<script th:inline="javascript">
+    var single = [[${rate}]];
+    console.log(single);
+    layui.config({
+        base: 'layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'laydate'], function(){
+        var $ = layui.$
+            ,admin = layui.admin
+            ,element = layui.element
+            ,layer = layui.layer
+            ,laydate = layui.laydate
+            ,form = layui.form;
+
+        form.val("component-form-group", {
+            "suserrate": single.suserrate,
+            "sdeptrate": single.sdeptrate,
+            "snote": single.snote,
+        });
+
+        form.render(null, 'component-form-group');
+
+        laydate.render({
+            elem: '#LAY-component-form-group-date'
+        });
+
+
+        /* 监听指定开关 */
+        form.on('switch(component-form-switchTest)', function(data){
+            layer.msg('开关checked：'+ (this.checked ? 'true' : 'false'), {
+                offset: '6px'
+            });
+            layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
+        });
+
+        /* 监听提交 */
+        form.on('submit(component-form-demo1)', function(data){
+            // parent.layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // })
+            var entity=JSON.stringify(data.field);
+            layer.confirm('确定要保存吗？', function(index) {0
+
+                //执行 Ajax 后重载
+                $.ajax({
+                    url:'/rate/info/add',
+                    type:'post',
+                    dataType:'json',
+                    data:data.field,
+                    success:function(data){
+                        if (data.code == 0 ) {
+                            // layer.alert('删除成功');
+                            layer.msg('保存成功');
+                            window.location.reload();
+                            //两秒后跳转新页面
+                            // window.setTimeout("window.location='login_page'",2000);
+                        }else {
+                            layer.msg('保存失败');
+                        }
+                    }
+                });
+            });
+            //防止页面跳转
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

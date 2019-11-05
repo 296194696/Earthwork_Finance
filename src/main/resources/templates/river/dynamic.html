@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>地块作物基本信息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="layuiadmin/style/admin.css" media="all">
+    <script type="text/javascript" src="/my/js/jquery-3.3.1.js"></script>
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">河流名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="sname" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">河流长度</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="lenth" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">河长姓名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="username" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">污染源个数</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="sourcesnumber" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">河段水质</label>
+                    <div class="layui-input-block">
+                        <select name="quality">
+                            <option></option>
+                            <option value="1">很好</option>
+                            <option value="2">优</option>
+                            <option value="3">良</option>
+                            <option value="4">差</option>
+                            <option value="5">很差</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">污染程度</label>
+                    <div class="layui-input-block">
+                        <select name="pollution">
+                            <option></option>
+                            <option value="1">A</option>
+                            <option value="2">B</option>
+                            <option value="3">C</option>
+                            <option value="4">D</option>
+                            <option value="5">E</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-user-front-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <div style="padding-bottom: 10px;">
+                <button class="layui-btn layuiadmin-btn-useradmin" data-type="addblock">添加</button>
+                <button class="layui-btn layuiadmin-btn-useradmin" data-type="editblock">编辑</button>
+                <button class="layui-btn layuiadmin-btn-useradmin" data-type="batchdelblock">删除</button>
+            </div>
+
+            <table class="layui-hide" id="block" lay-filter="block"></table>
+            <script type="text/html" id="table-useradmin-webuser">
+                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+            </script>
+        </div>
+    </div>
+</div>
+<script src="layuiadmin/layui/layui.js" charset="utf-8"></script>
+
+
+<script>
+    var blockdata=null;
+    layui.use(['table','laydate'], function(){
+        var $ = layui.$
+            ,form = layui.form
+            ,table = layui.table
+            ,laydate= layui.laydate;
+        laydate.render({
+            elem: '#iyear' //指定元素
+            ,type: 'year'
+        });
+        var blockid=null;
+        table.render({
+            elem: '#block'
+            ,url:'/dynamic/info/readall'
+            ,height: 400
+            ,title: '河流静态数据表'
+            ,toolbar: true
+            ,totalRow: true
+            ,cols: [
+                [
+                    {checkbox: true, fixed: true}
+                    // {field:'indocno', title:'ID', fixed: 'left', unresize: true, sort: true}
+                    ,{field:'sname', title:'河流名称'}
+                    ,{field:'lenth', title:'河流长度'}
+                    ,{field:'username', title:'河长姓名'}
+                    ,{field:'spost', title:'河长行政职务'}
+                    ,{field:'stage', title:'河段水位'}
+                    ,{field:'flow', title:'河段流量'}
+                    ,{field:'quality', title:'河段水质'}
+                    ,{field:'pollution', title:'污染程度'}
+                    ,{field:'sourcesnumber', title:'污染源个数'}
+                    ,{field:'sourcesname', title:'污染源名称'}
+                    ,{field:'sourcesposition', title:'污染位置'}
+                    ,{field:'safety', title:'河段安全情况'}
+                    ,{field:'dregt', title:'创建时间'}
+                ]
+            ]
+            ,page: true
+
+            ,done: function(res, page, count){
+                //如果是异步请求数据方式，res即为你接口返回的信息。
+                //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+
+                //分类显示中文名称
+                $("[data-field='quality']").children().each(function(){
+                    if($(this).text()=='1'){
+                        $(this).text("很好")
+                    }else if($(this).text()=='2'){
+                        $(this).text("优")
+                    }else if($(this).text()=='3'){
+                        $(this).text("良")
+                    }else if($(this).text()=='4'){
+                        $(this).text("差")
+                    }else if($(this).text()=='5'){
+                        $(this).text("很差")
+                    }
+                });
+                //分类显示中文名称
+                $("[data-field='pollution']").children().each(function(){
+                    if($(this).text()=='1'){
+                        $(this).text("A")
+                    }else if($(this).text()=='2'){
+                        $(this).text("B")
+                    }else if($(this).text()=='3'){
+                        $(this).text("C")
+                    }else if($(this).text()=='4'){
+                        $(this).text("D")
+                    }else if($(this).text()=='5'){
+                        $(this).text("E")
+                    }
+                });
+            }
+        });
+
+        //监听搜索
+        form.on('submit(LAY-user-front-search)', function(data){
+            var field = data.field;
+            //执行重载
+            table.reload('block', {
+                where: field
+            });
+        });
+
+        //地块事件
+        var active = {
+            batchdelblock: function(){
+                var checkStatus = table.checkStatus('block')
+                    ,checkData = checkStatus.data; //得到选中的数据
+                if(checkData.length === 0){
+                    return layer.msg('请选择数据');
+                }
+
+                layer.prompt({
+                    formType: 1
+                    ,title: '敏感操作，请验证口令'
+                }, function(value, index){
+                    layer.close(index);
+                    //console.log(checkData[0]["indocno"]);
+
+                    layer.confirm('确定删除吗？', function(index) {
+
+                        //执行 Ajax 后重载
+                        $.ajax({
+                            url:'/dynamic/info/delete',
+                            type:'post',
+                            dataType:'json',
+                            data:{
+                                delLists : checkData[0]["indocno"]
+                            },
+                            success:function(data){
+                                //alert(data.body.code);
+                                if (data.code == 0 ) {
+                                    // layer.alert('删除成功');
+                                    // window.location.reload();
+                                    table.reload('block');
+                                    layer.msg('已删除');
+                                    layer.close(index); //关闭弹层
+                                    //两秒后跳转新页面
+                                    // window.setTimeout("window.location='login_page'",2000);
+                                }else {
+                                    layer.msg('删除失败');
+                                }
+                            }
+                        });
+                    });
+                });
+            }
+            ,editblock: function(){
+                var checkStatus = table.checkStatus('block')
+                    ,checkData = checkStatus.data; //得到选中的数据
+                blockdata=checkData;
+                console.log(blockdata);
+                if(checkData.length === 0){
+                    return layer.msg('请选择数据');
+                }
+                layer.open({
+                    type: 2
+                    ,title: '添加河流动态信息'
+                    ,content: 'dynamicform'
+                    ,maxmin: true
+                    ,area: ['500px', '700px']
+                    ,btn: ['确定', '取消']
+                    ,yes: function(index, layero){
+                        var iframeWindow = window['layui-layer-iframe'+ index]
+                            ,submitID = 'LAY-user-front-submit'
+                            ,submit = layero.find('iframe').contents().find('#'+ submitID);
+
+                        //监听提交
+                        iframeWindow.layui.form.on('submit('+ submitID +')', function(data){
+                            var field = data.field; //获取提交的字段
+                            field.indocno=checkData[0]["indocno"];
+
+                            //提交 Ajax 成功后，静态更新表格中的数据
+                            $.ajax({
+                                url:'/dynamic/info/update',
+                                type:'post',
+                                dataType:'json',
+                                data:field,
+                                success:function(data){
+                                    //alert(data.body.code);
+                                    if (data.code == 0 ) {
+                                        table.reload('block');
+                                        layer.msg('添加成功');
+                                        layer.close(index); //关闭弹层
+                                        // layer.alert('添加成功');
+                                        // window.location.reload();
+                                    }else {
+                                        layer.msg('添加失败');
+                                    }
+                                }
+                            });
+                            table.reload('block'); //数据刷新
+                            layer.close(index); //关闭弹层
+                        });
+                        blockdata=null;
+                        submit.trigger('click');
+                    } ,btn2: function(index, layero){
+                        blockdata=null;
+                        layer.close(index); //关闭弹层
+                    }
+                });
+
+            }
+            ,addblock: function(){
+                layer.open({
+                    type: 2
+                    ,title: '添加河流动态信息'
+                    ,content: 'dynamicform'
+                    ,maxmin: true
+                    ,area: ['500px', '700px']
+                    ,btn: ['确定', '取消']
+                    ,yes: function(index, layero){
+                        var iframeWindow = window['layui-layer-iframe'+ index]
+                            ,submitID = 'LAY-user-front-submit'
+                            ,submit = layero.find('iframe').contents().find('#'+ submitID);
+
+                        //监听提交
+                        iframeWindow.layui.form.on('submit('+ submitID +')', function(data){
+                            var field = data.field; //获取提交的字段
+
+                            //提交 Ajax 成功后，静态更新表格中的数据
+                            $.ajax({
+                                url:'/dynamic/info/add',
+                                type:'post',
+                                dataType:'json',
+                                data:field,
+                                success:function(data){
+                                    //alert(data.body.code);
+                                    if (data.code == 0 ) {
+                                        table.reload('block');
+                                        layer.msg('添加成功');
+                                        layer.close(index); //关闭弹层
+                                        // layer.alert('添加成功');
+                                        // window.location.reload();
+                                    }else {
+                                        layer.msg('添加失败');
+                                    }
+                                }
+                            });
+                            table.reload('LAY-user-front-submit'); //数据刷新
+                            layer.close(index); //关闭弹层
+                        });
+                        submit.trigger('click');
+                    }
+                });
+            }
+        };
+
+        $('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,288 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>layuiAdmin 控制台主页一</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
+</head>
+<body>
+
+<div class="layui-fluid">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md8">
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6">
+          <div class="layui-card">
+            <div class="layui-card-header">基本信息</div>
+            <div class="layui-card-body">
+
+              <div class="layui-carousel layadmin-carousel layadmin-shortcut">
+                <div carousel-item>
+                  <ul class="layui-row layui-col-space10">
+                    <li class="layui-col-xs3">
+                      <a lay-href="/driver">
+                        <i class="layui-icon layui-icon-console"></i>
+                        <cite>车辆人员</cite>
+                      </a>
+                    </li>
+                    <li class="layui-col-xs3">
+                      <a lay-href="/customer">
+                        <i class="layui-icon layui-icon-chart"></i>
+                        <cite>对公账户</cite>
+                      </a>
+                    </li>
+                    <li class="layui-col-xs3">
+                      <a lay-href="/revenue">
+                        <i class="layui-icon layui-icon-template-1"></i>
+                        <cite>收支科目</cite>
+                      </a>
+                    </li>
+                  </ul>
+                  </ul>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="layui-col-md6">
+          <div class="layui-card">
+            <div class="layui-card-header">财务管理</div>
+            <div class="layui-card-body">
+
+              <div class="layui-carousel layadmin-carousel layadmin-shortcut">
+                <div carousel-item>
+                  <ul class="layui-row layui-col-space10">
+                    <li class="layui-col-xs3">
+                      <a lay-href="/transportation">
+                        <i class="layui-icon layui-icon-survey"></i>
+                        <cite>车辆运输登记</cite>
+                      </a>
+                    </li>
+                    <li class="layui-col-xs3">
+                      <a lay-href="/advance">
+                        <i class="layui-icon layui-icon-survey"></i>
+                        <cite>预支款登记</cite>
+                      </a>
+                    </li>
+                    <li class="layui-col-xs3">
+                      <a lay-href="/income">
+                        <i class="layui-icon layui-icon-survey"></i>
+                        <cite>收入登记</cite>
+                      </a>
+                    </li>
+                    <li class="layui-col-xs3">
+                      <a lay-href="/expenditure">
+                        <i class="layui-icon layui-icon-survey"></i>
+                        <cite>支出登记</cite>
+                      </a>
+                    </li>
+                  </ul>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="layui-col-md12">
+          <div class="layui-card">
+            <div class="layui-card-header">数据概览</div>
+            <div class="layui-card-body">
+              <select id="select">
+                <option value="2020">2020年</option>
+                <option value="2019" selected>2019年</option>
+                <option value="2018">2018年</option>
+              </select>
+              <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+              <div id="main" style="width: 100%;height:400px;"></div>
+
+            </div>
+          </div>
+
+      </div>
+
+    </div>
+
+    </div>
+
+    <div class="layui-col-md4">
+      <div class="layui-card">
+        <div class="layui-card-header">报表统计</div>
+        <div class="layui-card-body">
+
+          <div class="layui-carousel layadmin-carousel layadmin-shortcut">
+            <div carousel-item>
+              <ul class="layui-row layui-col-space10">
+                <li class="layui-col-xs3">
+                  <a lay-href="http://49.232.43.228:8089/webroot/decision/view/report?viewlet=transportation.cpt">
+                    <i class="layui-icon layui-icon-template-1"></i>
+                    <cite>司机运输单</cite>
+                  </a>
+                </li>
+                <li class="layui-col-xs3">
+                  <a lay-href="http://49.232.43.228:8089/webroot/decision/view/report?viewlet=tranmonthdetail.cpt">
+                    <i class="layui-icon layui-icon-template-1"></i>
+                    <cite>运输月报表</cite>
+                  </a>
+                </li>
+                <li class="layui-col-xs3">
+                  <a lay-href="http://49.232.43.228:8089/webroot/decision/view/report?viewlet=tranyeardetail.cpt">
+                    <i class="layui-icon layui-icon-template-1"></i>
+                    <cite>运输年报表</cite>
+                  </a>
+                </li>
+                <li class="layui-col-xs3">
+                  <a lay-href="http://49.232.43.228:8089/webroot/decision/view/report?viewlet=financeday.cpt">
+                    <i class="layui-icon layui-icon-template-1"></i>
+                    <cite>日报表</cite>
+                  </a>
+                </li>
+                <li class="layui-col-xs3">
+                  <a lay-href="http://49.232.43.228:8089/webroot/decision/view/report?viewlet=financemonth.cpt">
+                    <i class="layui-icon layui-icon-chat"></i>
+                    <cite>月报表</cite>
+                  </a>
+                </li>
+                <li class="layui-col-xs3">
+                  <a lay-href="http://49.232.43.228:8089/webroot/decision/view/report?viewlet=financeyear.cpt">
+                    <i class="layui-icon layui-icon-find-fill"></i>
+                    <cite>年报表</cite>
+                  </a>
+                </li>
+              </ul>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+  <script th:src="@{my/js/jquery.min.js}"></script>
+<script src="../../layuiadmin/echarts.min.js"></script>
+<script src="layuiadmin/layui/layui.js" charset="utf-8"></script>
+<script th:inline="javascript">
+  layui.config({
+    base: '../../layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'console']);
+
+  var userid= [[${userid}]];
+  var flag=false;
+  if (userid==2){
+    style="display: none;"
+    document.getElementById("demo").style.display="none";//隐藏
+    flag=true;
+  }
+
+  // 基于准备好的dom，初始化echarts实例
+  $(function () {
+      getData4();
+  });
+  $(function () {
+    $('#select').on('change', function() {
+      var val = $(this).val();
+      getData4(val);
+    });
+  });
+  function  getData4(val) {
+    var url;
+    if(val==''||val==null){
+      url='revenue/info/monthAmount'
+    }else {
+      url='revenue/info/monthAmount?year='+val;
+    }
+    $.ajax({
+      type: 'post',
+      dataType: 'text',
+      url:  url,
+      data: {},
+      cache: false,
+      async: true,
+      success: function (data) {
+        var data = eval('(' + data + ')');
+        // var data1 = new Array();
+        // for(var i=0; i < data.mapName.length; i++){
+        //   data1[i] = {value:data.mapValue[i],name:data.mapName[i]}
+        // }
+        // alert(JSON.stringify(data));
+        var myChart = echarts.init(document.getElementById('main'));
+
+        //指定图表的配置项和数据
+        option = {
+          title : {
+            text: '车辆运输统计图',
+            subtext: '元'
+          },
+          tooltip : {
+            trigger: 'axis'
+          },
+          legend: {
+            data:['金额']
+          },
+          toolbox: {
+            show : true,
+            feature : {
+              mark : {show: true},
+              dataView : {show: true, readOnly: false},
+              magicType : {show: true, type: ['line', 'bar']},
+              restore : {show: true},
+              saveAsImage : {show: true}
+            }
+          },
+          calculable : true,
+          xAxis : [
+            {
+              type : 'category',
+              data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+            }
+          ],
+          yAxis : [
+            {
+              type : 'value'
+            }
+          ],
+          series : [
+            {
+              name:'金额',
+              type:'bar',
+              data:data,
+              itemStyle: {
+                normal: {
+                  color: function(params) {
+                    // build a color map as your need.
+                    var colorList = [
+                      '#C1232B','#B5C334','#FCCE10','#E87C25','#27727B',
+                      '#FE8463','#9BCA63','#FAD860','#F3A43B','#60C0DD',
+                      '#D7504B','#C6E579','#F4E001','#F0805A','#26C0C0'
+                    ];
+                    return colorList[params.dataIndex]
+                  },label: {
+                    show: true,
+                    position: 'top',
+                    formatter: '{b}\n{c}'
+                  }
+                }
+              }
+            }
+          ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+      }
+    });
+  };
+</script>
+</body>
+</html>
+

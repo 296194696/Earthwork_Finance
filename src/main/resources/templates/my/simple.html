@@ -1,0 +1,69 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>简单用法 - 数据表格</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="layuiadmin/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="layuiadmin/style/admin.css" media="all">
+</head>
+<body>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+      <a><cite>组件</cite></a>
+      <a><cite>数据表格</cite></a>
+      <a><cite>简单用法</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">简单用法</div>
+          <div class="layui-card-body">
+            <table class="layui-hide" id="test-table-simple"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="layuiadmin/layui/layui.js"></script>
+  <script>
+  layui.config({
+    base: 'layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'table'], function(){
+    var table = layui.table;
+  
+    table.render({
+        elem: '#test-table-simple'
+        ,url: 'driver/info/readall'
+        ,response: {
+          statusName: 'code' //规定数据状态的字段名称，默认：code
+          ,statusCode: 1 //规定成功的状态码，默认：0
+          ,msgName: 'errorMsg' //规定状态信息的字段名称，默认：msg
+          ,countName: 'pagination.totalCount' //规定数据总数的字段名称，默认：count
+          ,dataName: 'data' //规定数据列表的字段名称，默认：data
+        }
+        ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+        ,cols: [
+          [
+            {field:'sname', width:200, title: '司机姓名'}
+            ,{field:'isex', width:80, title: '性别', sort: true}
+            ,{field:'sphone', width:150, title: '手机号码'}
+          ]
+        ]
+    });
+  });
+  </script>
+</body>
+</html>
